@@ -13,6 +13,30 @@ namespace CupMod.Blocks
     {
         private bool IsCurrentlyThrowing = false;
         private bool IsThrowingEnabled = true;
+        public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot, ref EnumHandling handling)
+    {
+        WorldInteraction[] baseInteractions = base.GetHeldInteractionHelp(inSlot, ref handling);
+
+        if (inSlot?.Itemstack != null && GetCurrentLitres(inSlot.Itemstack) <= 0)
+        {
+            WorldInteraction[] interactions = new WorldInteraction[baseInteractions.Length + 1];
+
+            interactions[0] = new WorldInteraction()
+            {
+                ActionLangCode = "daymarescupmod:blockhelp-throwcup",
+                MouseButton = EnumMouseButton.Right
+            };
+
+            for (int i = 0; i < baseInteractions.Length; i++)
+            {
+                interactions[i + 1] = baseInteractions[i];
+            }
+
+            return interactions;
+        }
+
+        return baseInteractions;
+    }
 
         public override void OnHeldInteractStart(ItemSlot itemslot, EntityAgent byEntity, BlockSelection blockSel, EntitySelection entitySel, bool firstEvent, ref EnumHandHandling handHandling)
         {
