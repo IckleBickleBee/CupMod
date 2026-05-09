@@ -9,8 +9,13 @@ using Vintagestory.GameContent;
 
 namespace CupMod.Blocks
 {
-    public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
-{
+    public class BlockCup : BlockLiquidContainerTopOpened
+    {
+        private bool IsCurrentlyThrowing = false;
+        private bool IsThrowingEnabled = true;
+
+        public override WorldInteraction[] GetHeldInteractionHelp(ItemSlot inSlot)
+        {
     WorldInteraction[] baseInteractions = base.GetHeldInteractionHelp(inSlot) ?? Array.Empty<WorldInteraction>();
     if (inSlot?.Itemstack != null && GetCurrentLitres(inSlot.Itemstack) <= 0)
     {
