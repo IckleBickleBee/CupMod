@@ -1,5 +1,6 @@
 {
     //handled in BlockCup.cs
+    "blockhelp-throwcup": "Throw",
     "blockcraftdesc-rawclaycup-*": "Once fired, clay cups can be drank from, and then thrown at your friends",
     "blockcraftdesc-rawclaymug-*": "Once fired, clay mugs can be drank from, and then thrown at your friends",
     "blockcraftdesc-rawclayshot-*": "Once fired, clay shot cups can be drank from, and then thrown at your friends",
