@@ -102,8 +102,6 @@ namespace CupMod.Blocks
 
                     tf.Translation.Set(offset / 4f, offset / 2f, 0);
                     tf.Rotation.Set(0, 0, GameMath.Min(90, secondsUsed * 360 / 1.5f));
-
-                    byEntity.Controls.UsingHeldItemTransformBefore = tf;
                 }
                 return true;
             }
