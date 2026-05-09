@@ -1,10 +1,10 @@
 {
     "type": "code",
-    "modid": "daymarescupmod",
-    "name": "Daymare's Cup Mod",
+    "modid": "daymarescupmodrevival",
+    "name": "Daymare's Cup Mod Revival",
     "description" : "Adds various drinking implements that can be thrown.",
     "authors": ["Daymare"],
-    "version": "1.0.7",
+    "version": "1.0.0",
     "dependencies": { 
       "game": ""
     }
