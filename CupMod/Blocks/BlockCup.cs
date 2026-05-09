@@ -154,14 +154,14 @@ namespace CupMod.Blocks
                 byEntity.StopAnimation("aim");
 
                 if (secondsUsed < 0.35f) return;
-
+                if (byEntity.World.Side == EnumAppSide.Client) return;
                 float damage = 1;
                 ItemStack stack = slot.TakeOut(1);
                 //Used for glass and clay types
-                string cup_color = stack.Collectible.Variant["color"];
+                string cup_color = stack.Collectible.Variant.ContainsKey("color") ? stack.Collectible.Variant["color"] : "";
                 //Used for tankards
-                string cup_wood = stack.Collectible.Variant["wood"];
-                string cup_metal = stack.Collectible.Variant["metal"];
+                string cup_wood = stack.Collectible.Variant.ContainsKey("wood") ? stack.Collectible.Variant["wood"] : "";
+                string cup_metal = stack.Collectible.Variant.ContainsKey("metal") ? stack.Collectible.Variant["metal"] : "";
 
                 string cup_type = stack.Collectible.Code.FirstCodePart();
                 Console.WriteLine(cup_type);
@@ -196,6 +196,13 @@ namespace CupMod.Blocks
                     default:
                         type = byEntity.World.GetEntityType(new AssetLocation("daymarescupmod", $"throwncup-{cup_color}"));
                         break;
+                }
+                if (type == null)
+                {
+                    byEntity.World.Logger.Warning("[Cup Mod] Could not find thrown entity type for {0}", stack.Collectible.Code);
+                    slot.Itemstack = stack;
+                    slot.MarkDirty();
+                    return;
                 }
                 Entity entity = byEntity.World.ClassRegistry.CreateEntity(type);
                 ((EntityThrownCup)entity).FiredBy = byEntity;
