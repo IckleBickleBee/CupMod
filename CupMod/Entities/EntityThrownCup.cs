@@ -42,21 +42,22 @@ namespace CupMod.Entities
             get { return false; }
         }
 
-        #region IProjectile
-        Entity? IProjectile.FiredBy { get => FiredBy; set => FiredBy = value; }
+                #region IProjectile
+        Entity IProjectile.FiredBy { get => FiredBy; set => FiredBy = value; }
         float IProjectile.Damage { get => Damage; set => Damage = value; }
         int IProjectile.DamageTier { get => DamageTier; set => DamageTier = value; }
         EnumDamageType IProjectile.DamageType { get; set; }
         bool IProjectile.IgnoreInvFrames { get; set; }
-        ItemStack? IProjectile.ProjectileStack { get => ProjectileStack; set => ProjectileStack = value; }
-        ItemStack? IProjectile.WeaponStack { get; set; }
+        ItemStack IProjectile.ProjectileStack { get => ProjectileStack; set => ProjectileStack = value; }
+        CollectibleObject IProjectile.Collectible { get => ProjectileStack?.Collectible; set { } }
+        ItemStack IProjectile.WeaponStack { get; set; }
         float IProjectile.DropOnImpactChance { get; set; }
         bool IProjectile.DamageStackOnImpact { get; set; }
-        bool IProjectile.NonCollectible { get => NonCollectible; set => NonCollectible = value; }
         bool IProjectile.EntityHit { get; }
         float IProjectile.Weight { get => Properties.Weight; set => Properties.Weight = value; }
         bool IProjectile.Stuck { get => stuck; set => stuck = value; }
 
+        void IProjectile.SetFromConfig(IProjectileJsonConfig config) { }
         void IProjectile.PreInitialize() { }
         #endregion
 
