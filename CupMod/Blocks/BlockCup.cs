@@ -208,17 +208,17 @@ namespace CupMod.Blocks
                 double rndpitch = byEntity.WatchedAttributes.GetDouble("aimingRandPitch", 1) * acc * 0.75;
                 double rndyaw = byEntity.WatchedAttributes.GetDouble("aimingRandYaw", 1) * acc * 0.75;
 
-                Vec3d pos = byEntity.ServerPos.XYZ.Add(0, byEntity.LocalEyePos.Y, 0);
-                Vec3d aheadPos = pos.AheadCopy(1, byEntity.ServerPos.Pitch + rndpitch, byEntity.ServerPos.Yaw + rndyaw);
+                Vec3d pos = byEntity.Pos.XYZ.Add(0, byEntity.LocalEyePos.Y, 0);
+                Vec3d aheadPos = pos.AheadCopy(1, byEntity.Pos.Pitch + rndpitch, byEntity.Pos.Yaw + rndyaw);
                 Vec3d velocity = (aheadPos - pos) * 0.5;
 
-                entity.ServerPos.SetPosWithDimension(
-                    byEntity.ServerPos.BehindCopy(0.21).XYZ.Add(0, byEntity.LocalEyePos.Y, 0)
+                entity.Pos.SetPosWithDimension(
+                    byEntity.Pos.BehindCopy(0.21).XYZ.Add(0, byEntity.LocalEyePos.Y, 0)
                 );
 
-                entity.ServerPos.Motion.Set(velocity);
+                entity.Pos.Motion.Set(velocity);
 
-                entity.Pos.SetFrom(entity.ServerPos);
+                entity.Pos.SetFrom(entity.Pos);
                 entity.World = byEntity.World;
 
                 byEntity.World.SpawnEntity(entity);
