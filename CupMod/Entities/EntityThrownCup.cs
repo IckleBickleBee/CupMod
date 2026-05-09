@@ -91,7 +91,7 @@ namespace CupMod.Entities
             base.OnGameTick(dt);
             if (ShouldDespawn) return;
 
-            EntityPos pos = SidedPos;
+            EntityPos pos = Pos;
 
             stuck = Collided;
             if (stuck)
@@ -118,7 +118,7 @@ namespace CupMod.Entities
 
         public override void OnCollided()
         {
-            EntityPos pos = SidedPos;
+            EntityPos pos = Pos;
 
             if (!beforeCollided && World is IServerWorldAccessor)
             {
@@ -156,7 +156,7 @@ namespace CupMod.Entities
 
                     if (strength > 0.1f && World.Rand.NextDouble() > 1 - HorizontalImpactBreakChance)
                     {
-                        World.SpawnCubeParticles(SidedPos.XYZ.OffsetCopy(0, 0.2, 0), ProjectileStack, 0.5f, ImpactParticleCount, ImpactParticleSize, null, new Vec3f(xdir * (float)motionBeforeCollide.X * 8, 0, zdir * (float)motionBeforeCollide.Z * 8));
+                        World.SpawnCubeParticles(Pos.XYZ.OffsetCopy(0, 0.2, 0), ProjectileStack, 0.5f, ImpactParticleCount, ImpactParticleSize, null, new Vec3f(xdir * (float)motionBeforeCollide.X * 8, 0, zdir * (float)motionBeforeCollide.Z * 8));
                         World.PlaySoundAt(new AssetLocation(break_sound_asset_loc), this, null, false, 32, strength);
                         Die();
                     }
@@ -168,7 +168,7 @@ namespace CupMod.Entities
 
                     if (strength > 0.1f && World.Rand.NextDouble() > 1 - VerticalImpactBreakChance)
                     {
-                        World.SpawnCubeParticles(SidedPos.XYZ.OffsetCopy(0, 0.25, 0), ProjectileStack, 0.5f, ImpactParticleCount, ImpactParticleSize, null, new Vec3f((float)motionBeforeCollide.X * 8, (float)-motionBeforeCollide.Y * 6, (float)motionBeforeCollide.Z * 8));
+                        World.SpawnCubeParticles(Pos.XYZ.OffsetCopy(0, 0.25, 0), ProjectileStack, 0.5f, ImpactParticleCount, ImpactParticleSize, null, new Vec3f((float)motionBeforeCollide.X * 8, (float)-motionBeforeCollide.Y * 6, (float)motionBeforeCollide.Z * 8));
                         World.PlaySoundAt(new AssetLocation(break_sound_asset_loc), this, null, false, 32, strength);
                         Die();
                     }
@@ -181,14 +181,14 @@ namespace CupMod.Entities
 
                 if (World is IServerWorldAccessor)
                 {
-                    Entity entity = World.GetNearestEntity(ServerPos.XYZ, 5f, 5f, (e) =>
+                    Entity entity = World.GetNearestEntity(Pos.XYZ, 5f, 5f, (e) =>
                     {
                         if (e.EntityId == EntityId || FiredBy != null && e.EntityId == FiredBy.EntityId && World.ElapsedMilliseconds - msLaunch < 500 || !e.IsInteractable)
                         {
                             return false;
                         }
 
-                        double dist = e.SelectionBox.ToDouble().Translate(e.ServerPos.X, e.ServerPos.Y, e.ServerPos.Z).ShortestDistanceFrom(ServerPos.X, ServerPos.Y, ServerPos.Z);
+                        double dist = e.SelectionBox.ToDouble().Translate(e.Pos.X, e.Pos.Y, e.Pos.Z).ShortestDistanceFrom(Pos.X, Pos.Y, Pos.Z);
                         return dist < 0.5f;
                     });
 
@@ -204,7 +204,7 @@ namespace CupMod.Entities
                             YDirKnockbackDiv = 3
                         }, Damage);
                         World.PlaySoundAt(new AssetLocation("sounds/thud"), this, null, false, 32);
-                        World.SpawnCubeParticles(entity.SidedPos.XYZ.OffsetCopy(0, 0.2, 0), ProjectileStack, 0.2f, ImpactParticleCount, ImpactParticleSize);
+                        World.SpawnCubeParticles(entity.Pos.XYZ.OffsetCopy(0, 0.2, 0), ProjectileStack, 0.2f, ImpactParticleCount, ImpactParticleSize);
 
                         if (FiredBy is EntityPlayer && didDamage)
                         {
@@ -225,7 +225,7 @@ namespace CupMod.Entities
 
         public override bool CanCollect(Entity byEntity)
         {
-            return !NonCollectible && Alive && World.ElapsedMilliseconds - msLaunch > 1000 && ServerPos.Motion.Length() < 0.01;
+            return !NonCollectible && Alive && World.ElapsedMilliseconds - msLaunch > 1000 && Pos.Motion.Length() < 0.01;
         }
 
         public override ItemStack OnCollected(Entity byEntity)
@@ -239,7 +239,7 @@ namespace CupMod.Entities
         {
             if (motionBeforeCollide.Y <= 0)
             {
-                SidedPos.Motion.Y = GameMath.Clamp(motionBeforeCollide.Y * -0.5f, -0.1f, 0.1f);
+                Pos.Motion.Y = GameMath.Clamp(motionBeforeCollide.Y * -0.5f, -0.1f, 0.1f);
                 PositionBeforeFalling.Y = Pos.Y + 1;
             }
 
