@@ -49,7 +49,7 @@ namespace CupMod.Entities
         EnumDamageType IProjectile.DamageType { get; set; }
         bool IProjectile.IgnoreInvFrames { get; set; }
         ItemStack IProjectile.ProjectileStack { get => ProjectileStack; set => ProjectileStack = value; }
-        CollectibleObject IProjectile.Collectible { get => ProjectileStack?.Collectible; set { } }
+        bool IProjectile.Collectible { get => !NonCollectible; set => NonCollectible = !value; }
         ItemStack IProjectile.WeaponStack { get; set; }
         float IProjectile.DropOnImpactChance { get; set; }
         bool IProjectile.DamageStackOnImpact { get; set; }
